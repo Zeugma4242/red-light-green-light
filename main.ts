@@ -1,20 +1,24 @@
-radio.onReceivedNumber(function on_received_number(receivedNumber: number) {
-    
+radio.onReceivedNumber(function (receivedNumber) {
     state = receivedNumber
 })
-basic.forever(function on_forever() {
-    let REDLIGHT = 0
-    let GREENLIGHT = 0
-    let state = 0
-    if (state == GREENLIGHT) {
-        basic.showIcon(IconNames.Yes)
-    } else if (state == REDLIGHT) {
-        basic.showIcon(IconNames.No)
-    }
-    
-})
+let movement = 0
 let state = 0
 state = 0
 let GREENLIGHT = 1
 let REDLIGHT = 2
 radio.setGroup(1)
+basic.forever(function () {
+    if (state == REDLIGHT) {
+        movement = Math.abs(input.acceleration(Dimension.Strength) - 1000)
+        if (movement > 100) {
+            game.gameOver()
+        }
+    }
+})
+basic.forever(function () {
+    if (state == GREENLIGHT) {
+        basic.showIcon(IconNames.Yes)
+    } else if (state == REDLIGHT) {
+        basic.showIcon(IconNames.No)
+    }
+})
